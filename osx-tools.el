@@ -29,6 +29,18 @@ With PREFIX, cd to project root."
 ;; open iterm new tab 
 ;; 
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
+(defun open-iterm-tab ()
+  (interactive)
+  (let* ((path (file-name-directory (file-name-directory (or load-file-name buffer-file-name))))
+         (script (concat
+                  "activate application \"iTerm\"\n"
+                  "tell application \"System Events\" to keystroke \"t\" using command down\n"
+                  "tell application \"iTerm\" to tell session -1 of current terminal to write text \""
+                  path
+                  "\"")))
+    (start-process "*open-iterm-info*" nil
+                   "osascript" "-e"
+                   script))
+  )
 
 (provide 'osx-tools)
